@@ -16,9 +16,11 @@ Instructions:
 
 ###Setup the controllers:
 
-1. Add a [CameraRig] prefab from SteamVR if you haven't done so already.
+1. Create a new project.
+1. Import SteamVR and F4VR.
+1. Remove the MainCamera object from the hierarchy.
+1. Add a [CameraRig] prefab from SteamVR.
 1. Add the **VR_Controller** and **VR_ControllerEvents** scripts to both Left and Right controllers of [CameraRig].
-1. Colliders and kinematic rigidbodys (set as triggers) are automatically added to the controllers.
 
 UnityEvents are invoked on VR_ControllerEvents components when buttons are pressed on the controllers. This is useful for the menu button for example, or for using the touch pad as a Play/Stop button like they do in Fantastic Contraptions.
 
@@ -72,3 +74,4 @@ TODO:
   * Doors
   * Drawers
   * Simple pistol
+* Automatically adding the CapsuleCollider and Rigidbody to the controllers should be optional. How about doing like the SteamVR camera: have Expand and Collapse buttons add the CapsuleCollider and Rigidbody in the editor.
