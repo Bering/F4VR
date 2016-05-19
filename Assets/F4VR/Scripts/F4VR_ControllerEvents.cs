@@ -6,6 +6,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(SteamVR_TrackedObject))]
 public class F4VR_ControllerEvents : MonoBehaviour
 {
+	public bool isTriggerPulled = false;
 	public bool isTriggerClicked = false;
 	public bool isGripped = false;
 	public bool isMenuPressed = false;
@@ -16,11 +17,14 @@ public class F4VR_ControllerEvents : MonoBehaviour
 	public bool isPadClickedWest = false;
 	public bool isPadTouched = false;
 
+	public float triggerDeadZone = 0.1f;
 	public float padAxisHorizontal;
 	public float padAxisVertical;
 	public float triggerAxis;
 
 	[System.Serializable] public class VR_ControllerEvents_EventClass : UnityEvent<F4VR_Controller> {}
+	public VR_ControllerEvents_EventClass TriggerPulled;
+	public VR_ControllerEvents_EventClass TriggerUnPulled;
 	public VR_ControllerEvents_EventClass TriggerClicked;
 	public VR_ControllerEvents_EventClass TriggerUnclicked;
 	public VR_ControllerEvents_EventClass Gripped;
@@ -71,7 +75,17 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		padAxisVertical = v2.y;
 		triggerAxis = controller_SteamVR.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis1).x;
 
-		currentlyPressed = controller_SteamVR.GetPress (SteamVR_Controller.ButtonMask.Trigger);
+		currentlyPressed = triggerAxis > triggerDeadZone;
+		if (currentlyPressed && !isTriggerPulled) {
+			isTriggerPulled = true;
+			TriggerPulled.Invoke (controller);
+		}
+		else if(!currentlyPressed && isTriggerPulled) {
+			isTriggerPulled = false;
+			TriggerUnPulled.Invoke (controller);
+		}
+
+		currentlyPressed = (triggerAxis == 1f);
 		if (currentlyPressed && !isTriggerClicked) {
 			isTriggerClicked = true;
 			TriggerClicked.Invoke (controller);
