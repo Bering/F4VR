@@ -42,11 +42,11 @@ public class F4VR_ControllerEvents : MonoBehaviour
 	public VR_ControllerEvents_EventClass PadClickedWest;
 	public VR_ControllerEvents_EventClass PadUnClickedWest;
 	public VR_ControllerEvents_EventClass PadTouched;
-
 	public VR_ControllerEvents_EventClass PadUnTouched;
 
 	private SteamVR_Controller.Device controller_SteamVR;
 	private F4VR_Controller controller;
+	private bool currentlyPressed;
 	private Vector2 v2;
 
 
@@ -69,7 +69,6 @@ public class F4VR_ControllerEvents : MonoBehaviour
 
 	void Update()
 	{
-		bool currentlyPressed;
 		v2 = controller_SteamVR.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0);
 		padAxisHorizontal = v2.x;
 		padAxisVertical = v2.y;
