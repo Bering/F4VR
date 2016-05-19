@@ -26,13 +26,13 @@ public class F4VR_ControllerEvents : MonoBehaviour
 	public VR_ControllerEvents_EventClass TriggerPulled;
 	public VR_ControllerEvents_EventClass TriggerUnPulled;
 	public VR_ControllerEvents_EventClass TriggerClicked;
-	public VR_ControllerEvents_EventClass TriggerUnclicked;
+	public VR_ControllerEvents_EventClass TriggerUnClicked;
 	public VR_ControllerEvents_EventClass Gripped;
-	public VR_ControllerEvents_EventClass Ungripped;
+	public VR_ControllerEvents_EventClass UnGripped;
 	public VR_ControllerEvents_EventClass MenuButtonClicked;
-	public VR_ControllerEvents_EventClass MenuButtonUnclicked;
+	public VR_ControllerEvents_EventClass MenuButtonUnClicked;
 	public VR_ControllerEvents_EventClass PadClicked;
-	public VR_ControllerEvents_EventClass PadUnclicked;
+	public VR_ControllerEvents_EventClass PadUnClicked;
 	public VR_ControllerEvents_EventClass PadClickedNorth;
 	public VR_ControllerEvents_EventClass PadUnClickedNorth;
 	public VR_ControllerEvents_EventClass PadClickedEast;
@@ -42,8 +42,8 @@ public class F4VR_ControllerEvents : MonoBehaviour
 	public VR_ControllerEvents_EventClass PadClickedWest;
 	public VR_ControllerEvents_EventClass PadUnClickedWest;
 	public VR_ControllerEvents_EventClass PadTouched;
-	public VR_ControllerEvents_EventClass PadUntouched;
 
+	public VR_ControllerEvents_EventClass PadUnTouched;
 
 	private SteamVR_Controller.Device controller_SteamVR;
 	private F4VR_Controller controller;
@@ -92,7 +92,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		}
 		else if(!currentlyPressed && isTriggerClicked) {
 			isTriggerClicked = false;
-			TriggerUnclicked.Invoke (controller);
+			TriggerUnClicked.Invoke (controller);
 		}
 
 		currentlyPressed = controller_SteamVR.GetPress (SteamVR_Controller.ButtonMask.Grip);
@@ -102,7 +102,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		}
 		else if(!currentlyPressed && isGripped) {
 			isGripped = false;
-			Ungripped.Invoke (controller);
+			UnGripped.Invoke (controller);
 		}
 
 		currentlyPressed = controller_SteamVR.GetPress (SteamVR_Controller.ButtonMask.ApplicationMenu);
@@ -112,7 +112,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		}
 		else if(!currentlyPressed && isMenuPressed) {
 			isMenuPressed = false;
-			MenuButtonUnclicked.Invoke (controller);
+			MenuButtonUnClicked.Invoke (controller);
 		}
 
 		currentlyPressed = controller_SteamVR.GetPress (SteamVR_Controller.ButtonMask.Touchpad);
@@ -122,7 +122,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		}
 		else if(!currentlyPressed && isPadClicked) {
 			isPadClicked = false;
-			PadUnclicked.Invoke (controller);
+			PadUnClicked.Invoke (controller);
 		}
 
 		if (isPadClicked && (padAxisVertical > 0.3f) && !isPadClickedNorth) {
@@ -164,7 +164,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		}
 		else if(!currentlyPressed && isPadTouched) {
 			isPadTouched= false;
-			PadUntouched.Invoke (controller);
+			PadUnTouched.Invoke (controller);
 		}
 
 	}
