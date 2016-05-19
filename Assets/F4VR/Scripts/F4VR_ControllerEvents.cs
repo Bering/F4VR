@@ -10,6 +10,10 @@ public class F4VR_ControllerEvents : MonoBehaviour
 	public bool isGripped = false;
 	public bool isMenuPressed = false;
 	public bool isPadClicked = false;
+	public bool isPadClickedNorth = false;
+	public bool isPadClickedEast = false;
+	public bool isPadClickedSouth = false;
+	public bool isPadClickedWest = false;
 	public bool isPadTouched = false;
 
 	public float padAxisHorizontal;
@@ -25,6 +29,14 @@ public class F4VR_ControllerEvents : MonoBehaviour
 	public VR_ControllerEvents_EventClass MenuButtonUnclicked;
 	public VR_ControllerEvents_EventClass PadClicked;
 	public VR_ControllerEvents_EventClass PadUnclicked;
+	public VR_ControllerEvents_EventClass PadClickedNorth;
+	public VR_ControllerEvents_EventClass PadUnClickedNorth;
+	public VR_ControllerEvents_EventClass PadClickedEast;
+	public VR_ControllerEvents_EventClass PadUnClickedEast;
+	public VR_ControllerEvents_EventClass PadClickedSouth;
+	public VR_ControllerEvents_EventClass PadUnClickedSouth;
+	public VR_ControllerEvents_EventClass PadClickedWest;
+	public VR_ControllerEvents_EventClass PadUnClickedWest;
 	public VR_ControllerEvents_EventClass PadTouched;
 	public VR_ControllerEvents_EventClass PadUntouched;
 
@@ -97,6 +109,38 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		else if(!currentlyPressed && isPadClicked) {
 			isPadClicked = false;
 			PadUnclicked.Invoke (controller);
+		}
+
+		if (isPadClicked && (padAxisVertical > 0.3f) && !isPadClickedNorth) {
+			isPadClickedNorth = true;
+			PadClickedNorth.Invoke (controller);
+		} else if (!isPadClicked || !(padAxisVertical > 0.3f) && isPadClickedNorth) {
+			isPadClickedNorth = false;
+			PadUnClickedNorth.Invoke (controller);
+		}
+
+		if (isPadClicked && (padAxisHorizontal > 0.3f) && !isPadClickedEast) {
+			isPadClickedEast = true;
+			PadClickedEast.Invoke (controller);
+		} else if (!isPadClicked || !(padAxisHorizontal > 0.3f) && isPadClickedEast) {
+			isPadClickedEast = false;
+			PadUnClickedEast.Invoke (controller);
+		}
+
+		if (isPadClicked && (padAxisVertical < -0.3f) && !isPadClickedSouth) {
+			isPadClickedSouth = true;
+			PadClickedSouth.Invoke (controller);
+		} else if (!isPadClicked || !(padAxisVertical < -0.3f) && isPadClickedSouth) {
+			isPadClickedSouth = false;
+			PadUnClickedSouth.Invoke (controller);
+		}
+
+		if (isPadClicked && (padAxisHorizontal < -0.3f) && !isPadClickedWest) {
+			isPadClickedWest = true;
+			PadClickedWest.Invoke (controller);
+		} else if (!isPadClicked || !(padAxisHorizontal < -0.3f) && isPadClickedWest) {
+			isPadClickedWest = false;
+			PadUnClickedWest.Invoke (controller);
 		}
 
 		currentlyPressed = controller_SteamVR.GetTouch (SteamVR_Controller.ButtonMask.Touchpad);
