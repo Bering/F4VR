@@ -17,9 +17,10 @@ Instructions:
 ###Setup the controllers:
 
 1. Create a new project.
-1. Import SteamVR and F4VR.
+1. Download and Import SteamVR from the Asset Store.
 1. Remove the MainCamera object from the hierarchy.
 1. Add a [CameraRig] prefab from SteamVR.
+1. Download and Import F4VR from the [release folder on GitHub](F4VR/releases).
 1. Add the **F4VR_Controller** and **F4VR_ControllerEvents** scripts to both Left and Right controllers of [CameraRig].
 
 UnityEvents are invoked on F4VR_ControllerEvents components when buttons are pressed on the controllers. This is useful for the menu button for example, or for using the touch pad as a Play/Stop button like they do in Fantastic Contraptions.
@@ -54,12 +55,10 @@ If you set the F4VR_Grabbable.isThrowable boolean to false, momentum is not tran
 TODO:
 -----
 
-* Example scenes?
+* More example scenes
 * Fix the buggy transfer of momentum when F4VR_Grabbable objects are released
-* Add North/East/South/West events for when pressing the touch pad, instead of just "PadPressed"
 * Add event for when the player directly looks at an object (with optional crosshair?)
 * Add a custom inspector to allow folding groups of events
-* Wrap the SteamF4VR_Controller axis into F4VR_Controller axis
 * Add event for when the player does common gestures:
   * Eating
   * Drinking
