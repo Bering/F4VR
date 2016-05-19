@@ -12,6 +12,9 @@ public class F4VR_ControllerEvents : MonoBehaviour
 	public bool isPadClicked = false;
 	public bool isPadTouched = false;
 
+	public float padAxisHorizontal;
+	public float padAxisVertical;
+	public float triggerAxis;
 
 	[System.Serializable] public class VR_ControllerEvents_EventClass : UnityEvent<F4VR_Controller> {}
 	public VR_ControllerEvents_EventClass TriggerClicked;
@@ -28,6 +31,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 
 	private SteamVR_Controller.Device controller_SteamVR;
 	private F4VR_Controller controller;
+	private Vector2 v2;
 
 
 	void Start()
@@ -50,6 +54,10 @@ public class F4VR_ControllerEvents : MonoBehaviour
 	void Update()
 	{
 		bool currentlyPressed;
+		v2 = controller_SteamVR.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0);
+		padAxisHorizontal = v2.x;
+		padAxisVertical = v2.y;
+		triggerAxis = controller_SteamVR.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis1).x;
 
 		currentlyPressed = controller_SteamVR.GetPress (SteamVR_Controller.ButtonMask.Trigger);
 		if (currentlyPressed && !isTriggerClicked) {
