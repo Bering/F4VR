@@ -8,7 +8,6 @@ public class F4VR_Grabbable : MonoBehaviour {
 	public GrabbableEventClass GrabbedEvent;
 	public GrabbableEventClass ReleasedEvent;
 
-
 	public bool debugGrabbing;
 	public bool debugReleasing;
 
@@ -17,7 +16,8 @@ public class F4VR_Grabbable : MonoBehaviour {
 	protected new Rigidbody rigidbody;
 	protected FixedJoint joint = null;
 	protected bool wasKinematic;
-
+	public float breakForce = 1000f;
+	public float breakTorque = 1f;
 
 	// TODO: Make a dictionary of controller/joint to allow holding something with both hands (and to allow switching hands)
 
@@ -57,6 +57,8 @@ public class F4VR_Grabbable : MonoBehaviour {
 
 		joint = gameObject.AddComponent<FixedJoint>();
 		joint.connectedBody = controller.GetComponent<Rigidbody>();
+		joint.breakForce = breakForce;
+		joint.breakTorque = breakTorque;
 
 		wasKinematic = rigidbody.isKinematic;
 //		rigidbody.isKinematic = true;
