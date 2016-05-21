@@ -17,7 +17,7 @@ public class F4VR_Grabbable : MonoBehaviour {
 	protected FixedJoint joint = null;
 	protected bool wasKinematic;
 	public float breakForce = 1000f;
-	public float breakTorque = 1f;
+	public float breakTorque = 100f;
 
 	// TODO: Make a dictionary of controller/joint to allow holding something with both hands (and to allow switching hands)
 
