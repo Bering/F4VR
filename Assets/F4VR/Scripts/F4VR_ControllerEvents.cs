@@ -127,7 +127,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		if (isPadClicked && (padAxisVertical > 0.3f) && !isPadClickedNorth) {
 			isPadClickedNorth = true;
 			PadClickedNorth.Invoke (controller);
-		} else if (!isPadClicked || !(padAxisVertical > 0.3f) && isPadClickedNorth) {
+		} else if (isPadClickedNorth && (!isPadClicked || !(padAxisVertical > 0.3f))) {
 			isPadClickedNorth = false;
 			PadUnClickedNorth.Invoke (controller);
 		}
@@ -135,7 +135,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		if (isPadClicked && (padAxisHorizontal > 0.3f) && !isPadClickedEast) {
 			isPadClickedEast = true;
 			PadClickedEast.Invoke (controller);
-		} else if (!isPadClicked || !(padAxisHorizontal > 0.3f) && isPadClickedEast) {
+		} else if (isPadClickedEast && (!isPadClicked || !(padAxisHorizontal > 0.3f))) {
 			isPadClickedEast = false;
 			PadUnClickedEast.Invoke (controller);
 		}
@@ -143,7 +143,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		if (isPadClicked && (padAxisVertical < -0.3f) && !isPadClickedSouth) {
 			isPadClickedSouth = true;
 			PadClickedSouth.Invoke (controller);
-		} else if (!isPadClicked || !(padAxisVertical < -0.3f) && isPadClickedSouth) {
+		} else if (isPadClickedSouth && (!isPadClicked || !(padAxisVertical < -0.3f))) {
 			isPadClickedSouth = false;
 			PadUnClickedSouth.Invoke (controller);
 		}
@@ -151,7 +151,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		if (isPadClicked && (padAxisHorizontal < -0.3f) && !isPadClickedWest) {
 			isPadClickedWest = true;
 			PadClickedWest.Invoke (controller);
-		} else if (!isPadClicked || !(padAxisHorizontal < -0.3f) && isPadClickedWest) {
+		} else if (isPadClickedWest && (!isPadClicked || !(padAxisHorizontal < -0.3f))) {
 			isPadClickedWest = false;
 			PadUnClickedWest.Invoke (controller);
 		}
