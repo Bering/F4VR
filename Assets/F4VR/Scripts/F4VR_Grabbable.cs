@@ -84,9 +84,11 @@ public class F4VR_Grabbable : MonoBehaviour {
 		joint = null;
 
 		if (isThrowable) {
-			Rigidbody otherRigidbody = controller.GetComponent<Rigidbody> ();
-			rigidbody.velocity = otherRigidbody.velocity;
-			rigidbody.angularVelocity = otherRigidbody.angularVelocity;
+			SteamVR_Controller.Device device = SteamVR_Controller.Input ((int)(controller.GetComponent<SteamVR_TrackedObject> ().index));
+			Transform origin = controller.transform.parent;
+
+			rigidbody.velocity = origin.TransformVector(device.velocity);
+			rigidbody.angularVelocity = origin.TransformVector(device.angularVelocity);
 			rigidbody.maxAngularVelocity = rigidbody.angularVelocity.magnitude;
 		}
 		//rigidbody.isKinematic = wasKinematic;
