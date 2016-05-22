@@ -56,7 +56,7 @@ public class F4VR_ControllerEvents : MonoBehaviour
 		SteamVR_TrackedObject.EIndex controllerIndex = GetComponent<SteamVR_TrackedObject> ().index;
 		if (controllerIndex == 0)
 		{
-			Debug.LogError ("F4VR_ControllerEvents doesn't watch for events on the HMD... Use F4VR_HmdEvents instead.");
+			Debug.LogError ("F4VR_ControllerEvents on " + gameObject.name + " doesn't watch for events on the HMD... Use F4VR_HmdEvents instead.");
 			Destroy (this);
 			return;
 		}
