@@ -56,7 +56,6 @@ TODO:
 -----
 
 * More example scenes
-* Fix the buggy transfer of momentum when F4VR_Grabbable objects are released
 * Add event for when the player directly looks at an object (with optional crosshair?)
 * Add a custom inspector to allow folding groups of events
 * Add event for when the player does common gestures:
