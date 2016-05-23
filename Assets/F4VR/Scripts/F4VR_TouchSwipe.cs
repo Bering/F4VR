@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 
 
-[RequireComponent(typeof(F4VR_ControllerEvents))]
+[RequireComponent(typeof(F4VR_Object))]
 public class F4VR_TouchSwipe : MonoBehaviour
 {
 	Vector2 startPos;
@@ -14,21 +14,42 @@ public class F4VR_TouchSwipe : MonoBehaviour
 	public F4VR_TouchSwipeEventClass SwipeDownEvent;
 	public F4VR_TouchSwipeEventClass SwipeLeftEvent;
 
+	// TODO: Again, I'll need a dictionary to allow more than one controller touching this
+	F4VR_Controller touchedBy = null;
+
 	public float minimumDistance = 0.6f;
 	public bool showDebugMessages = false;
 
 
-	void Start ()
+	void Start()
 	{
-		F4VR_ControllerEvents e = GetComponent<F4VR_ControllerEvents> ();
-		e.PadTouched.AddListener(StartTouch);
-		e.PadUnTouched.AddListener(EndTouch);
+		F4VR_Object o = GetComponent<F4VR_Object> ();
+		o.TouchedEvent.AddListener (StartListening);
+		o.UntouchedEvent.AddListener (StopListening);
 	}
 
 
 	void Destroy()
 	{
-		F4VR_ControllerEvents e = GetComponent<F4VR_ControllerEvents> ();
+		F4VR_Object o = GetComponent<F4VR_Object> ();
+		o.TouchedEvent.RemoveListener (StartListening);
+		o.UntouchedEvent.RemoveListener (StopListening);
+	}
+
+
+	void StartListening (F4VR_Controller controller)
+	{
+		F4VR_ControllerEvents e = controller.GetComponent<F4VR_ControllerEvents> ();
+		e.PadTouched.AddListener(StartTouch);
+		e.PadUnTouched.AddListener(EndTouch);
+		touchedBy = controller;
+	}
+
+
+	void StopListening(F4VR_Controller controller)
+	{
+		touchedBy = null;
+		F4VR_ControllerEvents e = controller.GetComponent<F4VR_ControllerEvents> ();
 		e.PadTouched.RemoveListener(StartTouch);
 		e.PadUnTouched.RemoveListener(EndTouch);
 	}
@@ -43,12 +64,18 @@ public class F4VR_TouchSwipe : MonoBehaviour
 
 	void Update()
 	{
-		endPos.x = GetComponent<F4VR_ControllerEvents> ().padAxisHorizontal;
-		endPos.y = GetComponent<F4VR_ControllerEvents> ().padAxisVertical;
+		if (touchedBy == null) {
+			return;
+		}
+
+		endPos.x = touchedBy.GetComponent<F4VR_ControllerEvents> ().padAxisHorizontal;
+		endPos.y = touchedBy.GetComponent<F4VR_ControllerEvents> ().padAxisVertical;
 	}
+
 
 	void EndTouch (F4VR_Controller controller)
 	{
+
 		if (showDebugMessages) {
 			Debug.Log ("Touch started at " + startPos + " and ended at " + endPos);
 		}
