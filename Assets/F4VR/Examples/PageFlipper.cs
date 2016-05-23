@@ -2,37 +2,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using System;
 
 public class PageFlipper : MonoBehaviour {
 
-	[SerializeField] protected RectTransform[] bookPages;
+	[SerializeField] protected Transform[] bookSheets;
 	[SerializeField] protected float maxRotationSpeed;
+	[SerializeField] protected float closeAngle = 0f;
+	[SerializeField] protected float openAngle = 179.999f;
 
-	protected float headingsDotProduct;
-	protected Quaternion toRotation;
-	protected RectTransform currentPage;
-	protected int indexCurrentPage;
+	protected Transform currentSheet;
+	protected int indexCurrentSheet;
+
 	protected bool isFlipping;
+	protected Vector3 hinge;
+
+	[SerializeField] protected float maxDelta;
+	[SerializeField] protected float toAngle;
 
 
 	void Start()
 	{
-		MovePagesApart ();
+		PlaceSheets ();
 
-		indexCurrentPage = bookPages.Length-1;
-		currentPage = bookPages[indexCurrentPage];
+		indexCurrentSheet = bookSheets.Length;
+		currentSheet = bookSheets[bookSheets.Length-1];
 	}
 
 
-	void MovePagesApart ()
+	void PlaceSheets ()
 	{
 		Vector3 pos;
 
-		for (int i = 0; i < bookPages.Length; i++) {
-			currentPage = bookPages [i];
-			pos = currentPage.localPosition;
-			pos.z = -bookPages.Length + (i / currentPage.localScale.z);
-			currentPage.localPosition = pos;
+		for (int i = 0; i < bookSheets.Length; i++) {
+			currentSheet = bookSheets [i];
+			pos = currentSheet.localPosition;
+			pos.z = -i * currentSheet.localScale.z;
+			currentSheet.localPosition = pos;
 		}
 	}
 
@@ -40,32 +46,41 @@ public class PageFlipper : MonoBehaviour {
 	[ContextMenu("Flip to next page")]
 	public void Next()
 	{
-		// Can't flip past the back cover
-		if (indexCurrentPage == 0) {
+		if (isFlipping) {
 			return;
 		}
 
-		currentPage.Rotate (0, -180, 0, Space.Self);
-		currentPage.Translate (0, 0, bookPages.Length-indexCurrentPage, Space.Self);
-		
-		indexCurrentPage--;
-		currentPage = bookPages[indexCurrentPage];
+		// Can't flip the back cover
+		if (indexCurrentSheet <= 0) {
+			return;
+		}
+
+		maxDelta = maxRotationSpeed;
+		toAngle = openAngle;
+
+		isFlipping = true;
 	}
 
 
 	[ContextMenu("Flip back to previous page")]
 	public void Back()
 	{
-		// Can't flip before the front cover
-		if (indexCurrentPage == bookPages.Length - 1) {
+		if (isFlipping) {
 			return;
 		}
 
-		currentPage.Translate (0, 0, -bookPages.Length-indexCurrentPage, Space.Self);
-		currentPage.Rotate (0, 180, 0, Space.Self);
+		// Can't flip before the front cover
+		if (indexCurrentSheet >= bookSheets.Length -1) {
+			return;
+		}
 
-		indexCurrentPage++;
-		currentPage = bookPages[indexCurrentPage];
+		indexCurrentSheet++;
+		currentSheet = bookSheets [indexCurrentSheet];
+
+		maxDelta = maxRotationSpeed;
+		toAngle = closeAngle;
+
+		isFlipping = true;
 	}
 
 
@@ -75,10 +90,13 @@ public class PageFlipper : MonoBehaviour {
 			return;
 		}
 
-		currentPage.localRotation = Quaternion.RotateTowards(currentPage.rotation, toRotation, maxRotationSpeed * Time.deltaTime);
+		currentSheet.localRotation = Quaternion.RotateTowards(currentSheet.localRotation, Quaternion.Euler (0, toAngle, 0), maxDelta);
 
-		headingsDotProduct = Quaternion.Dot (currentPage.rotation, toRotation);
-		if (headingsDotProduct == 1f) {  // -1 = parallel but opposite, 1 = parallel and same direction
+		if (Mathf.Approximately (currentSheet.localRotation.eulerAngles.y, toAngle)) {
+			if (toAngle == openAngle) {
+				indexCurrentSheet--;
+				currentSheet = bookSheets [indexCurrentSheet];
+			}
 			isFlipping = false;
 		}
 	}
